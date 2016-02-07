@@ -4,7 +4,8 @@
  * \brief Contains addresses and layouts of the peripherals used on the STM32F401 by this project
  */
 #include <stdint.h>
-
+
+
 /**
  * The Core IRQ, the STM32F401 IRQ would be added starting at 0
  * The core IRQs are all negative values - this is a CMSIS method to separate them.
@@ -17,20 +18,93 @@ typedef enum
   UsageFault_IRQn             = -10,    /*!< 6 Usage Fault */
   SVCall_IRQn                 = -5,     /*!< 11 SV Call */
   DebugMonitor_IRQn           = -4,     /*!< 12 Debug Monitor */
-  PendSV_IRQn                 = -2,     /*!< 14 Pend SV */
+  PendSV_IRQn                     = -2,     /*!< 14 Pend SV */
   SysTick_IRQn                = -1,     /*!< 15 System Tick */
  
  
-  /* The STM32F401 IRQs, only EXTI is added here, see Reference manual, section 10.2 */
-  
-  EXTI0_IRQn                  = 6,      /*!< EXTI Line0 */
-  EXTI1_IRQn                  = 7,      /*!< EXTI Line1 */
-  EXTI2_IRQn                  = 8,      /*!< EXTI Line2 */
-  EXTI3_IRQn                  = 9,      /*!< EXTI Line3 */
-  EXTI4_IRQn                  = 10,     /*!< EXTI Line4 */
-  EXTI9_5_IRQn                = 23,     /*!< EXTI Line 5->9 */
-  EXTI15_10_IRQn              = 40,     /*!< EXTI Lines 10->15 */
-  
+  /* The STM32F401 IRQs, see Reference manual, section 10.2 */
+  WWDG_IRQn                   = 0,      /*!< Window WatchDog                                         */
+  PVD_IRQn                    = 1,      /*!< PVD through EXTI Line detection                         */
+  TAMP_STAMP_IRQn             = 2,      /*!< Tamper and TimeStamps through the EXTI line             */
+  RTC_WKUP_IRQn               = 3,      /*!< RTC Wakeup through the EXTI line                        */
+  FLASH_IRQn                  = 4,      /*!< FLASH global                                            */
+  RCC_IRQn                    = 5,      /*!< RCC global                                              */
+  EXTI0_IRQn                  = 6,      /*!< EXTI Line0                                              */
+  EXTI1_IRQn                  = 7,      /*!< EXTI Line1                                              */
+  EXTI2_IRQn                  = 8,      /*!< EXTI Line2                                              */
+  EXTI3_IRQn                  = 9,      /*!< EXTI Line3                                              */
+  EXTI4_IRQn                  = 10,     /*!< EXTI Line4                                              */
+  DMA1_Stream0_IRQn           = 11,     /*!< DMA1 Stream 0 global                                    */
+  DMA1_Stream1_IRQn           = 12,     /*!< DMA1 Stream 1 global                                    */
+  DMA1_Stream2_IRQn           = 13,     /*!< DMA1 Stream 2 global                                    */
+  DMA1_Stream3_IRQn           = 14,     /*!< DMA1 Stream 3 global                                    */
+  DMA1_Stream4_IRQn           = 15,     /*!< DMA1 Stream 4 global                                    */
+  DMA1_Stream5_IRQn           = 16,     /*!< DMA1 Stream 5 global                                    */
+  DMA1_Stream6_IRQn           = 17,     /*!< DMA1 Stream 6 global                                    */
+  ADC_IRQn                    = 18,     /*!< ADC1, ADC2 and ADC3 globals                             */
+  CAN1_TX_IRQn                = 19,     /*!< CAN1 TX                                                 */
+  CAN1_RX0_IRQn               = 20,     /*!< CAN1 RX0                                                */
+  CAN1_RX1_IRQn               = 21,     /*!< CAN1 RX1                                                */
+  CAN1_SCE_IRQn               = 22,     /*!< CAN1 SCE                                                */
+  EXTI9_5_IRQn                = 23,     /*!< External Line[9:5]s                                     */
+  TIM1_BRK_TIM9_IRQn          = 24,     /*!< TIM1 Break and TIM9 global                    */
+  TIM1_UP_TIM10_IRQn          = 25,     /*!< TIM1 Update and TIM10 global                  */
+  TIM1_TRG_COM_TIM11_IRQn     = 26,     /*!< TIM1 Trigger and Commutation and TIM11 global */
+  TIM1_CC_IRQn                = 27,     /*!< TIM1 Capture Compare                                    */
+  TIM2_IRQn                   = 28,     /*!< TIM2 global                                             */
+  TIM3_IRQn                   = 29,     /*!< TIM3 global                                             */
+  TIM4_IRQn                   = 30,     /*!< TIM4 global                                             */
+  I2C1_EV_IRQn                = 31,     /*!< I2C1 Event                                              */
+  I2C1_ER_IRQn                = 32,     /*!< I2C1 Error                                              */
+  I2C2_EV_IRQn                = 33,     /*!< I2C2 Event                                              */
+  I2C2_ER_IRQn                = 34,     /*!< I2C2 Error                                              */  
+  SPI1_IRQn                   = 35,     /*!< SPI1 global                                             */
+  SPI2_IRQn                   = 36,     /*!< SPI2 global                                             */
+  USART1_IRQn                 = 37,     /*!< USART1 global                                           */
+  USART2_IRQn                 = 38,     /*!< USART2 global                                           */
+  USART3_IRQn                 = 39,     /*!< USART3 global                                           */
+  EXTI15_10_IRQn              = 40,     /*!< External Line[15:10]s                                   */
+  RTC_Alarm_IRQn              = 41,     /*!< RTC Alarm (A and B) through EXTI Line                   */
+  OTG_FS_WKUP_IRQn            = 42,     /*!< USB OTG FS Wakeup through EXTI line                     */    
+  TIM8_BRK_TIM12_IRQn         = 43,     /*!< TIM8 Break and TIM12 global                   */
+  TIM8_UP_TIM13_IRQn          = 44,     /*!< TIM8 Update and TIM13 global                  */
+  TIM8_TRG_COM_TIM14_IRQn     = 45,     /*!< TIM8 Trigger and Commutation and TIM14 global */
+  TIM8_CC_IRQn                = 46,     /*!< TIM8 Capture Compare                                    */
+  DMA1_Stream7_IRQn           = 47,     /*!< DMA1 Stream7                                            */
+  FSMC_IRQn                   = 48,     /*!< FSMC global                                             */
+  SDIO_IRQn                   = 49,     /*!< SDIO global                                             */
+  TIM5_IRQn                   = 50,     /*!< TIM5 global                                             */
+  SPI3_IRQn                   = 51,     /*!< SPI3 global                                             */
+  UART4_IRQn                  = 52,     /*!< UART4 global                                            */
+  UART5_IRQn                  = 53,     /*!< UART5 global                                            */
+  TIM6_DAC_IRQn               = 54,     /*!< TIM6 global and DAC1&2 underrun error s                 */
+  TIM7_IRQn                   = 55,     /*!< TIM7 global                                             */
+  DMA2_Stream0_IRQn           = 56,     /*!< DMA2 Stream 0 global                                    */
+  DMA2_Stream1_IRQn           = 57,     /*!< DMA2 Stream 1 global                                    */
+  DMA2_Stream2_IRQn           = 58,     /*!< DMA2 Stream 2 global                                    */
+  DMA2_Stream3_IRQn           = 59,     /*!< DMA2 Stream 3 global                                    */
+  DMA2_Stream4_IRQn           = 60,     /*!< DMA2 Stream 4 global                                    */
+  ETH_IRQn                    = 61,     /*!< Ethernet global                                         */
+  ETH_WKUP_IRQn               = 62,     /*!< Ethernet Wakeup through EXTI line                       */
+  CAN2_TX_IRQn                = 63,     /*!< CAN2 TX                                                 */
+  CAN2_RX0_IRQn               = 64,     /*!< CAN2 RX0                                                */
+  CAN2_RX1_IRQn               = 65,     /*!< CAN2 RX1                                                */
+  CAN2_SCE_IRQn               = 66,     /*!< CAN2 SCE                                                */
+  OTG_FS_IRQn                 = 67,     /*!< USB OTG FS global                                       */
+  DMA2_Stream5_IRQn           = 68,     /*!< DMA2 Stream 5 global                                    */
+  DMA2_Stream6_IRQn           = 69,     /*!< DMA2 Stream 6 global                                    */
+  DMA2_Stream7_IRQn           = 70,     /*!< DMA2 Stream 7 global                                    */
+  USART6_IRQn                 = 71,     /*!< USART6 global                                           */
+  I2C3_EV_IRQn                = 72,     /*!< I2C3 event                                              */
+  I2C3_ER_IRQn                = 73,     /*!< I2C3 error                                              */
+  OTG_HS_EP1_OUT_IRQn         = 74,     /*!< USB OTG HS End Point 1 Out global                       */
+  OTG_HS_EP1_IN_IRQn          = 75,     /*!< USB OTG HS End Point 1 In global                        */
+  OTG_HS_WKUP_IRQn            = 76,     /*!< USB OTG HS Wakeup through EXTI                          */
+  OTG_HS_IRQn                 = 77,     /*!< USB OTG HS global                                       */
+  DCMI_IRQn                   = 78,     /*!< DCMI global                                             */
+  CRYP_IRQn                   = 79,     /*!< CRYP crypto global                                      */
+  HASH_RNG_IRQn               = 80,     /*!< Hash and Rng global                                     */
+  FPU_IRQn                    = 81      /*!< FPU global                                              */
 } IRQn_Type;
 
 /**

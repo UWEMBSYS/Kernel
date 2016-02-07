@@ -39,7 +39,7 @@
 
 
 ;       These are the  stock Cortex interrupt vectors (well, some of them) 
-;       The only ones used in this example are Reset and SysTick
+;       
 ;       The rest are declared as 'weak' for now
 ;       (NOTE that IAR needs the name to be  __vector_table for the debugger and C-Spy to work correctly)
       PUBLIC  __vector_table
@@ -108,8 +108,48 @@ __vector_table
       DCD     0
       DCD     EXTI10Thru15IrqHandler        ; EXTI Lines 10 -> 15
      
-      ; There are more IRQs that are not added here......
-      
+        DCD     UnusedIrqHandler            ; RTC Alarm (A and B) through EXTI Line                  
+        DCD     UnusedIrqHandler            ; USB OTG FS Wakeup through EXTI line                        
+        DCD     UnusedIrqHandler            ; TIM8 Break and TIM12                  
+        DCD     UnusedIrqHandler            ; TIM8 Update and TIM13                 
+        DCD     UnusedIrqHandler            ; TIM8 Trigger and Commutation and TIM14
+        DCD     UnusedIrqHandler            ; TIM8 Capture Compare                                   
+        DCD     UnusedIrqHandler            ; DMA1 Stream7                                           
+        DCD     UnusedIrqHandler            ; FSMC                                            
+        DCD     UnusedIrqHandler            ; SDIO                                            
+        DCD     UnusedIrqHandler            ; TIM5                                            
+        DCD     UnusedIrqHandler            ; SPI3                                            
+        DCD     UnusedIrqHandler            ; UART4                                           
+        DCD     UnusedIrqHandler            ; UART5                                           
+        DCD     UnusedIrqHandler            ; TIM6 and DAC1&2 underrun errors                   
+        DCD     UnusedIrqHandler            ; TIM7                   
+        DCD     UnusedIrqHandler            ; DMA2 Stream 0                                   
+        DCD     UnusedIrqHandler            ; DMA2 Stream 1                                   
+        DCD     UnusedIrqHandler            ; DMA2 Stream 2                                   
+        DCD     UnusedIrqHandler            ; DMA2 Stream 3                                   
+        DCD     UnusedIrqHandler            ; DMA2 Stream 4                                   
+        DCD     UnusedIrqHandler            ; Ethernet                                        
+        DCD     UnusedIrqHandler            ; Ethernet Wakeup through EXTI line                      
+        DCD     UnusedIrqHandler            ; CAN2 TX                                                
+        DCD     UnusedIrqHandler            ; CAN2 RX0                                               
+        DCD     UnusedIrqHandler            ; CAN2 RX1                                               
+        DCD     UnusedIrqHandler            ; CAN2 SCE                                               
+        DCD     UnusedIrqHandler            ; USB OTG FS                                      
+        DCD     UnusedIrqHandler            ; DMA2 Stream 5                                   
+        DCD     UnusedIrqHandler            ; DMA2 Stream 6                                   
+        DCD     UnusedIrqHandler            ; DMA2 Stream 7                                   
+        DCD     UnusedIrqHandler            ; USART6                                           
+        DCD     UnusedIrqHandler            ; I2C3 event                                             
+        DCD     UnusedIrqHandler            ; I2C3 error                                             
+        DCD     UnusedIrqHandler            ; USB OTG HS End Point 1 Out                      
+        DCD     UnusedIrqHandler            ; USB OTG HS End Point 1 In                       
+        DCD     UnusedIrqHandler            ; USB OTG HS Wakeup through EXTI                         
+        DCD     UnusedIrqHandler            ; USB OTG HS                                      
+        DCD     UnusedIrqHandler            ; DCMI                                            
+        DCD     UnusedIrqHandler            ; CRYP crypto                                     
+        DCD     UnusedIrqHandler            ; Hash and Rng
+        DCD     UnusedIrqHandler            ; FPU
+     
       
       ; These are in the code section (.text)
       SECTION   .text:CODE:ROOT
@@ -154,29 +194,12 @@ HardFaultIrqHandler
       
       PUBLIC  ResetIrqHandler
       EXTERN  main
+      EXTERN  __iar_program_start
       ; Define what happens at reset.
 ResetIrqHandler
       
-      ; The IAR library handles this usually, but for this sample it will be done manually
-      ; for educational purposes
-      ;LDR     R0, =__iar_program_start  ; <- this will do the zero init and init data.
-      ;BX R0
-      
-      
-      ; For illustration do the full setup of the C Library data regions manually, 
-      ; This will call the C function InitializeDataSection
-      ; The stack pointer is already setup by the Cortex core
-      ; !!the C function must not use any globally initialized variables, as they have not been initialized yet!!
-      EXTERN    InitializeDataSection           ; Tell assembler this symbol is in another file
-      LDR       R0, =InitializeDataSection      ; Load a register with the address of the function
-      BLX       R0                              ; branch and link, absolute address
-                                                ; the link register LR, contains the address of the Next instruction below
-      
-      ; Globals has been initialized, bss set to zero (not C++ so no constructors to call)
-      ; Time to call main
-      ; note that main on an embedded system does not have the concept of a command line, hence no arguments
-      ; are passed in here
-      LDR       R5, =main
-      BX        R5                              ; branch, absolute address (never returns)
-      
+      ; The IAR library initialization
+      LDR     R0, =__iar_program_start  ; <- this will do the zero init and init data then jump to main.
+      BX R0
+
       END
